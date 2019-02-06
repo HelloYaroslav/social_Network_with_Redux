@@ -1,0 +1,31 @@
+.person {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    min-height: 50px;
+    background-color: #3D414C;
+    color: white;
+    border-bottom: 1px solid white;
+}
+
+.person img {
+    width: 30px;
+    height: 30px;
+    margin-right: 20px;
+    margin-left: 10px;
+    border: 2px solid tomato;
+    border-radius: 50%;
+}
+
+.person span {
+    text-decoration: none;
+    color: white;
+}
+
+.person:hover {
+    background-color: tomato;
+}
+
+.active .person {
+    background-color: dodgerblue;
+}

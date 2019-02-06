@@ -1,0 +1,53 @@
+
+.header {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    padding: 5px;
+    width: 100%;
+    height: 40px;
+    background-color: #3D414C;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.logout {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    width: 80px;
+    height: 35px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.disabled {
+    background-color: rebeccapurple;
+}
+
+.header button:hover {
+    background-color: steelblue;
+}
+
+.loadigImg {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: 50%;
+    margin-left: -50px;
+    right: 50%;
+    margin-left: -50px;
+    animation: rotation 2s infinite linear;
+    border-radius: 50%;
+
+}
+
+@keyframes rotation {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(359deg);
+    }
+}

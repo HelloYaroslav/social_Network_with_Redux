@@ -1,0 +1,14 @@
+.song {
+    display: flex;
+    align-items: center;
+    color: #f8f8f8;
+
+    margin-right: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    width: 100px;
+    height: 100px;
+    background-image: url("https://img.tyt.by/720x720s/n/afisha/04/1/valeriy_meladze_2016.jpg");
+    background-size: 100px 100px;
+}

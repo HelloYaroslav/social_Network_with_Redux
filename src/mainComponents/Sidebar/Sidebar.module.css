@@ -1,0 +1,25 @@
+.sidebar {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 150px;
+    width: 20%;
+    height: 650px;
+    background-color: #3D414C;
+    margin-right: 10px;
+}
+
+.sidebar .menu div {
+    color: azure;
+    padding: 5px;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+.sidebar .menu div:hover {
+    background-color: tomato;
+}
+
+.sidebar .menu .active div {
+    background-color: dodgerblue;
+}

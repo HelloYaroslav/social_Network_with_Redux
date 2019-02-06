@@ -1,0 +1,19 @@
+h3 {
+    color: #666666;
+}
+
+h2 {
+    color: #666666;
+}
+
+.page_wrapper {
+    width: 80%;
+    min-width: 600px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.content {
+    display: flex;
+}
+

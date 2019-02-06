@@ -1,0 +1,114 @@
+.login_page {
+    position: absolute;
+    left: 50%;
+    margin-left: -100px;
+    top: 20%;
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+
+
+    width: 200px;
+    border: 2px solid #3D414C;
+
+}
+
+.login_or_registration {
+    display: flex;
+    flex-direction: row;
+
+}
+
+.login_or_registration .action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 40px;
+    background-color: #666666;
+    color: white;
+    font-size: 16px;
+}
+
+.login_or_registration .action:first-child {
+    border-right: 1px solid #3D414C;
+}
+
+.login_or_registration .action:hover {
+    background-color: #3D414C;
+}
+
+.inputs {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+.inputs input {
+    border: 1px solid tomato;
+    border-radius: 5px;
+    padding: 5px;
+    margin-top: 7px;
+    margin-bottom: 7px;
+}
+
+.last_buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.enable {
+    background-color: lightgreen;
+    border-radius: 5px;
+    border: 2px solid #3D414C;
+}
+
+.disabled {
+    background-color: red;
+    color: #3D414C;
+    border-radius: 5px;
+    border: 2px solid #3D414C;
+}
+
+
+.last_buttons button:hover {
+    background-color: lightgreen;
+    background-color: #3D414C;
+    color: white;
+}
+
+.loadigImg {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: 50%;
+    margin-left: -50px;
+    right: 50%;
+    margin-left: -50px;
+    animation: rotation 2s infinite linear;
+    border-radius: 50%;
+
+}
+
+@keyframes rotation {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(359deg);
+    }
+}
+
+.disableResponseData {
+    display: none;
+}
+
+.enableResponseData {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+

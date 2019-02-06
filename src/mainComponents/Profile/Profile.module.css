@@ -1,0 +1,102 @@
+h3 {
+    color: #666666;
+}
+
+h2 {
+    color: #666666;
+}
+
+.page_wrapper {
+    width: 80%;
+    min-width: 600px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.content {
+    display: flex;
+}
+
+.profile {
+    width: 80%;
+}
+
+.profileImg {
+    width: 100%;
+    height: 200px;
+    margin-bottom: 10px;
+}
+
+.user_information {
+    display: flex;
+}
+
+.user_information a {
+    text-decoration: none;
+    color: black;
+}
+
+.user_information a:hover {
+    color: tomato;
+
+}
+
+.profile .user_information img {
+    width: 100px;
+    height: 100px;
+    margin-right: 20px;
+}
+
+.user_information h2 {
+    margin-top: 0px;
+}
+
+.add_notes {
+    display: flex;
+    flex-direction: column;
+}
+
+.add_notes textarea {
+    width: 100%;
+
+}
+
+.add_notes .add_note_area {
+    width: 100%;
+    height: 100px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    resize: none;
+}
+
+.add_notes button {
+    align-self: flex-end;
+    width: 100px;
+
+    background-color: #666666;;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 10px 2px;
+    cursor: pointer;
+}
+
+.add_notes button:hover {
+    background-color: tomato;
+}
+
+.notes {
+    display: flex;
+    flex-direction: column;
+
+    margin-top: 20px;
+    margin-bottom: 100px;
+    padding: 20px;
+    border: 2px solid #B98289;
+    border-radius: 10px;
+}
