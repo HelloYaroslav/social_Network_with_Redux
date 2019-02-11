@@ -143,6 +143,7 @@ const loginPageReducer = (state = initialState, action) => {
     switch (action.type) {
         case ON_EMAIL_CHANGE : {
             stateCopy = {...state, email: action.email};
+            console.log(action.email);
             return stateCopy
         }
         case ON_PASSWORD_CHANGE : {

@@ -1,0 +1,29 @@
+
+.page_wrapper {
+    width: 80%;
+    min-width: 600px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.content {
+    display: flex;
+}
+
+.profile_img {
+    width: 100%;
+    height: 200px;
+    margin-bottom: 10px;
+}
+
+.users {
+    display: flex;
+    flex-direction: column;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.users div img {
+    width: 90px;
+    height: 90px;
+}

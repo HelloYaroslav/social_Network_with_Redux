@@ -18,6 +18,9 @@ const Sidebar = () => {
                 <NavLink to='/music' activeClassName={style.active} style={{textDecoration: 'none', color: 'white'}}>
                     <div className="musik_button">Музыка</div>
                 </NavLink>
+                <NavLink to='/users' activeClassName={style.active} style={{textDecoration: 'none', color: 'white'}}>
+                    <div className="users_button">Пользователи</div>
+                </NavLink>
                 <br/>
                 <NavLink to='/settings' activeClassName={style.active} style={{textDecoration: 'none', color: 'white'}}>
                     <div className="settings_button">Настройки</div>

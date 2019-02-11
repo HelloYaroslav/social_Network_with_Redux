@@ -6,6 +6,7 @@ import musicPageReducer from './Reducers/musikPageReducer'
 import loginPageReducer from "./Reducers/loginPageReducer";
 import authReducer from "./Reducers/authReducer";
 import thunk from 'redux-thunk';
+import usersPageReducer from "./Reducers/usersPageReducer";
 
 let superReducer = combineReducers({
     profilePage: profilePageReducer,
@@ -14,6 +15,7 @@ let superReducer = combineReducers({
     musicPage: musicPageReducer,
     loginPage: loginPageReducer,
     authData: authReducer,
+    usersPage: usersPageReducer
 });
 
 let store = createStore(superReducer, applyMiddleware(thunk));

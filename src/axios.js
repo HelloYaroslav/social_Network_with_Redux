@@ -20,3 +20,7 @@ export const captchaRequest = () => axiosInst.get('security/get-captcha-url');
 export const logOutRequest = () => axiosInst.post('auth/logout');
 
 export const isLogged = () => axiosInst.get('auth/me');
+
+export const getUsers = (count, page) => {
+    return axiosInst.get('users')
+};
