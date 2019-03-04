@@ -1,20 +1,42 @@
 import React from 'react';
+
 import style from './Profile.module.css';
 import Post from './Wallpost/Post';
 import Header from "../Header/Header";
 import Sidebar from "../Sidebar/Sidebar";
+// @ts-ignore
 import {connect} from "react-redux";
 import isLoggedInHOC from "../../LoginPage/isLoggedInHOC";
+import {addPost, onPostWriting} from '../../Reducers/profilePageReducer';
 
+interface User {
+    birthday: string;
+    city: string;
+    education: string;
+    img: string;
+    name: string;
+    webPage: string;
+}
 
-const Profile = (props) => {
+interface ProfilePage {
+    currentPostText: string | null;
+    posts: Array<{}>;
+    user: User
+}
 
-    let user = props.profilePage.user;
-    let PostList = props.profilePage.posts.map((item, key) => {
+interface Props {
+    profilePage: ProfilePage;
+    isLoggedIn?: boolean;
+    onPostWriting: Function;
+    addPost: Function;
+}
+
+const Profile = ({profilePage, isLoggedIn, onPostWriting, addPost}: Props) => {
+    let user = profilePage.user;
+    let PostList = profilePage.posts.map((item: any, key: any) => {
         return <Post key={key} img={item.img} text={item.text}/>
     });
-
-
+    
     return (
         <div className={style.page_wrapper}>
             <Header/>
@@ -39,10 +61,11 @@ const Profile = (props) => {
                     <div className={style.add_notes}>
                         <h3>Мои записи</h3>
                         <textarea className={style.add_note_area} onChange={(e) => {
-                            props.onPostWriting(e.currentTarget.value)
-                        }}></textarea>
+                            onPostWriting(e.currentTarget.value)
+                        }}>
+                        </textarea>
                         <button onClick={() => {
-                            props.addPost()
+                            addPost()
                         }}>отправить
                         </button>
                     </div>
@@ -56,22 +79,19 @@ const Profile = (props) => {
     );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any) => {
     return {
         profilePage: state.profilePage
     }
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: any) => {
     return {
         addPost() {
-            dispatch({type: 'addPost'})
+            dispatch(addPost())
         },
-        onPostWriting(text) {
-            dispatch({
-                type: 'onPostWriting',
-                text
-            })
+        onPostWriting(text: string) {
+            dispatch(onPostWriting(text))
         }
     }
 };

@@ -22,5 +22,5 @@ export const logOutRequest = () => axiosInst.post('auth/logout');
 export const isLogged = () => axiosInst.get('auth/me');
 
 export const getUsers = (count, page) => {
-    return axiosInst.get('users')
+    return axiosInst.get(`users?count=${count}&page=${page}`)
 };

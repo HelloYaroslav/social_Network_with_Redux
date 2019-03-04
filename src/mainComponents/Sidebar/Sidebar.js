@@ -25,6 +25,9 @@ const Sidebar = () => {
                 <NavLink to='/settings' activeClassName={style.active} style={{textDecoration: 'none', color: 'white'}}>
                     <div className="settings_button">Настройки</div>
                 </NavLink>
+                <NavLink to='/form' activeClassName={style.active} style={{textDecoration: 'none', color: 'white'}}>
+                    <div className="settings_button">fORM</div>
+                </NavLink>
             </div>
         </div>
     );

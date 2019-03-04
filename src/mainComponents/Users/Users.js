@@ -12,19 +12,23 @@ class Users extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            count: undefined,
-            page: undefined
+            userPage: 1
         };
         this.createUsersComponents = this.createUsersComponents.bind(this);
     }
 
     componentWillMount() {
         if (!this.props.users)
-            this.props.getUsers(this.state.count, this.state.page)
+            this.props.getUsers()
     }
 
     createUsersComponents(users) {
-        return users.map(el => <User {...el}/>)
+        debugger;
+        let result = [];
+        for (let i = 0; i < this.props.itemsInPage * this.props.currentPage; i++)
+            result.push(<User {...users[i]}/>);
+
+        return result
     }
 
     render() {
@@ -32,13 +36,14 @@ class Users extends Component {
             <Header/>
             <div className={style.content}>
                 <Sidebar/>
-                <div className={style.news_wrapper}>
+                <div className={style.users_wrapper}>
                     <img className={style.profile_img} src="https://images7.alphacoders.com/542/thumb-1920-542418.jpg"
                          alt=""/>
                     {this.props.users ?
                         <div className={style.users}>
                             {this.createUsersComponents(this.props.users)}
                         </div> : 'downloading users'}
+                    <button onClick={this.props.getUsers}>more users</button>
                 </div>
             </div>
         </div>
@@ -56,7 +61,10 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
     return {
-        users: state.usersPage.users
+        users: state.usersPage.users,
+        totalPages: state.usersPage.totalPages,
+        itemsInPage: state.usersPage.itemsInPage,
+        currentPage: state.usersPage.currentPage - 1
     }
 };
 

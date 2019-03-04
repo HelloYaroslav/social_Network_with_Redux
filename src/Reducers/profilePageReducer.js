@@ -1,4 +1,8 @@
 import React from 'react'
+import {createActions, handleActions} from "redux-actions";
+
+const ADD_POST = 'ADD_POST';
+const ON_POST_WRITING = 'ON_POST_WRITING ';
 
 const initialStateForProfilePage = {
     user: {
@@ -39,42 +43,69 @@ const initialStateForProfilePage = {
 
 };
 
-const profilePageReducer = (state = initialStateForProfilePage, action) => {
-    let stateCopy = {
-        ...state, user: {...state.user}, posts: state.posts.map(el => {
-            return {...el}
-        })
-    };
+export const {addPost, onPostWriting} = createActions({
+    [ADD_POST]: null,
+    [ON_POST_WRITING]: text => ({text})
+});
 
-    const addPost = () => {
-        if (stateCopy.currentPostText) {
-            stateCopy.posts.push(
-                {
-                    img: 'https://img02.rl0.ru/b44d3865b62115f36f6c123137605b1f/c615x400/news.rambler.ru/img/weekend/2017/12/25190647.233841.8567.jpg',
-                    text: stateCopy.currentPostText
-                });
-            stateCopy.currentPostText = null
-        }
-    };
 
-    const onPostWriting = (text) => {
-        stateCopy.currentPostText = text;
-    };
-
-    switch (action.type) {
-        case 'addPost' : {
-            addPost();
-            return stateCopy
-        }
-        case 'onPostWriting' : {
-            console.log(stateCopy.currentPostText);
-            onPostWriting(action.text);
-            return stateCopy
-        }
-        default: {
-            return state;
-        }
+const messageCreator = (text) => {
+    return {
+        img: 'https://img02.rl0.ru/b44d3865b62115f36f6c123137605b1f/c615x400/news.rambler.ru/img/weekend/2017/12/25190647.233841.8567.jpg',
+        text
     }
 };
+
+const profilePageReducer = handleActions(
+    {
+        [ADD_POST]: state => {
+            debugger;
+            return {...state, posts: [...state.posts, messageCreator(state.currentPostText)]}
+        },
+
+        [ON_POST_WRITING]: (state, {payload}) => {
+            return {...state, currentPostText: payload.text}
+        }
+    },
+    initialStateForProfilePage);
+
+
+// const profilePageReducer = (state = initialStateForProfilePage, action) => {
+//     let stateCopy = {
+//         ...state, user: {...state.user}, posts: state.posts.map(el => {
+//             return {...el}
+//         })
+//     };
+//
+//     const addPost = () => {
+//         if (stateCopy.currentPostText) {
+//             stateCopy.posts.push(
+//                 {
+//                     img: 'https://img02.rl0.ru/b44d3865b62115f36f6c123137605b1f/c615x400/news.rambler.ru/img/weekend/2017/12/25190647.233841.8567.jpg',
+//                     text: stateCopy.currentPostText
+//                 });
+//             stateCopy.currentPostText = null
+//         }
+//     };
+//
+//     const onPostWriting = (text) => {
+//         stateCopy.currentPostText = text;
+//     };
+//
+//     switch (action.type) {
+//         case 'addPost' : {
+//             addPost();
+//             return stateCopy
+//         }
+//         case 'onPostWriting' : {
+//             console.log(stateCopy.currentPostText);
+//             onPostWriting(action.text);
+//             return stateCopy
+//         }
+//         default: {
+//             return state;
+//         }
+//     }
+// };
 
 export default profilePageReducer;

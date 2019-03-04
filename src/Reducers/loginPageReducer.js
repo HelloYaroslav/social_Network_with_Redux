@@ -1,10 +1,16 @@
 import {captchaRequest, loginRequest} from "../axios";
 import {setUserInfo} from "./authReducer";
+import {createSelector} from 'reselect'
 
 const initialState = {
     email: undefined,
     password: undefined,
     rememberMe: false,
+    initialValues: {
+        email: 'yaroslav.klimenkovv@gmail.com',
+        password: 111,
+        rememberMe: false
+    },
     submittingStatus: false,
     submittingIcon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSibHqAP3FwWKHm8nxlWUk9aYsbyMveL69OM3Zu_s4Re5HFa7P-',
     serverResponse: {
@@ -24,6 +30,7 @@ const SET_DATA_FROM_CAPTCHA = '/NETWORK/LOGIN/SET_DATA_FROM_CAPTCHA';
 const SHOW_DATA_RESPONSE = '/NETWORK/LOGIN/SHOW_DATA_RESPONSE';
 const SET_MESSAGE_TO_USER = '/NETWORK/LOGIN/SET_MESSAGE_TO_USER';
 const RESET_SESSION = '/NETWORK/LOGIN/RESET_SESSION ';
+const INIT_TABLE = '/NETWORK/LOGIN/INIT_TABLE ';
 
 export const setEmail = (email) => {
     return {
@@ -86,6 +93,11 @@ const resetSession = () => {
     }
 };
 
+const getSubmittingStatus = (state) => state.loginPage.submittingStatus;
+
+export const makeGetStatusStateInstans = () => createSelector(getSubmittingStatus,
+    (submittingStatus) => submittingStatus);
+
 export const getCaptcha = () => (dispatch, getState) => {
     captchaRequest().then(response => {
         let state = getState();
@@ -103,11 +115,9 @@ export const getCaptcha = () => (dispatch, getState) => {
 
 export const login = () => (dispatch, getstate) => {
     let state = getstate();
-    let {email = 'yaroslav.klimenkovv@gmail.com', password = '111', rememberMe = true, captchaValue} = state.loginPage; //default values
+    let {email, password, rememberMe, captchaValue} = state.form.loginForm.values;
     dispatch(changeSubmittingStatus());
-
-    loginRequest(email, password, rememberMe, captchaValue).then(response => {
-        //debugger;
+    return loginRequest(email, password, rememberMe, captchaValue).then(response => {
         if (response.status === 200) {
             switch (response.data.resultCode) {
                 case 0 : {
@@ -138,6 +148,12 @@ export const login = () => (dispatch, getstate) => {
 
 };
 
+
+export const initTable = () => {
+    return {
+        type: INIT_TABLE
+    }
+};
 const loginPageReducer = (state = initialState, action) => {
     let stateCopy;
     switch (action.type) {
@@ -176,6 +192,9 @@ const loginPageReducer = (state = initialState, action) => {
         }
         case RESET_SESSION: {
             stateCopy = {...initialState, submittingStatus: true};
+            return stateCopy;
+        }
+        case INIT_TABLE: {
             return stateCopy;
         }
         default : {

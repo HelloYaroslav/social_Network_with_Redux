@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {isLogged} from "../axios";
 import {connect} from "react-redux";
 import {setUserInfo} from "../Reducers/authReducer";
-import {Redirect} from "react-router-dom";
+import {Redirect, withRouter} from "react-router-dom";
 
 
 const isLoggedInHOC = (ComponentToHOC) => {
@@ -33,6 +33,8 @@ const isLoggedInHOC = (ComponentToHOC) => {
                     }
                 }).catch(response => {
                 })
+            } else {
+                this.setState({isLogged: true})
             }
         }
 
@@ -41,10 +43,17 @@ const isLoggedInHOC = (ComponentToHOC) => {
         }
 
         render() {
+            console.log('Hoc render');
             if (this.state.processing)
                 return 'processing';
             else
-                return this.state.isLogged ? <ComponentToHOC  {...this.props}/> : <Redirect to='/'/>
+                return this.state.isLogged
+                    ? (this.props.location.pathname !== `/`)
+                        ? <ComponentToHOC  {...this.props}/>
+                        : <Redirect to='/profile'/>
+                    : (this.props.location.pathname === `/`)
+                        ? <ComponentToHOC  {...this.props}/>
+                        : <Redirect to='/'/>
         }
     }
 
@@ -63,7 +72,8 @@ const isLoggedInHOC = (ComponentToHOC) => {
         }
     };
 
-    return connect(mapStateToProps, mapDispatchToProps)(isLoggedIn)
+    isLoggedIn = withRouter(isLoggedIn);
+    return (connect(mapStateToProps, mapDispatchToProps)(isLoggedIn))
 };
 
 

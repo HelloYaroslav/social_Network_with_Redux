@@ -2,23 +2,30 @@ import React from 'react'
 import {getUsers} from "../axios";
 
 const initialState = {
-    users: null
+    users: null,
+    itemsInPage: 4,
+    currentPage: 1,
+    totalCount: null,
+    totalPages: null
 };
 
 const FILL_USERS = '/SN/USERSPAGE/FILL_USERS';
 
-const fillUsers = (users) => {
+const fillUsers = (users, totalCount) => {
     return {
         type: FILL_USERS,
-        users
+        users,
+        totalCount
     }
 };
 
-export const getUsersFromServer = (count, page) => (dispatch) => {
-    getUsers(count, page).then(response => {
+export const getUsersFromServer = () => (dispatch, getState) => {
+    let state = getState();
+    getUsers(state.usersPage.itemsInPage, state.usersPage.currentPage).then(response => {
         debugger;
         if (response.status === 200) {
-            dispatch(fillUsers(response.data.items));
+            debugger;
+            dispatch(fillUsers(response.data.items, response.data.totalCount));
         }
     })
 };
@@ -29,7 +36,25 @@ const usersPageReducer = (state = initialState, action) => {
     switch (action.type) {
         case FILL_USERS : {
             debugger;
-            stateCopy = {...state, users: [...action.users]};
+            if (!state.users) {
+                stateCopy = {
+                    ...state,
+                    users: [...action.users],
+                    currentPage: state.currentPage + 1,
+                    totalCount: action.totalCount,
+                    totalPages: Math.ceil(action.totalCount / state.itemsInPage)
+                };
+
+            } else {
+                stateCopy = {
+                    ...state,
+                    users: [...state.users, ...action.users],
+                    currentPage: state.currentPage + 1,
+                    totalCount: action.totalCount,
+                    totalPages: Math.ceil(action.totalCount / state.itemsInPage)
+                };
+
+            }
             return stateCopy;
         }
         default: {
