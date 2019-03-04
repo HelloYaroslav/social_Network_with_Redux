@@ -59,7 +59,7 @@ class LoginForm extends Component {
 
                     <button type="submit">Submit</button>
                 </div>
-                <div className={!this.props.showDataResponse ? style.disableResponseData : style.enableResponseData}>
+                <div className={this.props.showDataResponse ? style.enableResponseData  : style.disableResponseData}>
                     <br/>
                     <span>{this.props.messageToUser}</span>
                     <img src={this.props.captchaImg} alt=''/>

@@ -7,14 +7,13 @@ import Settings from './mainComponents/Settings/Settings';
 import Dialog from "./mainComponents/Dilog/Dilog";
 import Login from './LoginPage/LoginPage';
 import Users from "./mainComponents/Users/Users";
-import TryForm from "./mainComponents/formTry/TryForm";
+
 
 const App = () => {
     return (
         <BrowserRouter>
             <Switch>
                 <Route exact path='/' component={Login}/>
-                <Route exact path='/form' component={TryForm}/>
                 <Route exact path='/profile' component={Profile}/>
                 <Route exact path='/music' component={Music}/>
                 <Route exact path='/dialogs/:id?' component={Dialog}/>
