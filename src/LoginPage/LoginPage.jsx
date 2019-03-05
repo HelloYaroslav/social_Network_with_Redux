@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {
-    getCaptcha,
     getCaptchaImg,
     getMessageToUser,
     getShowDataResponse,
@@ -12,6 +11,7 @@ import {
 import LoginForm from "../mainComponents/Forms/LoginForm/LoginForm";
 import isLoggedInHOC from "./isLoggedInHOC";
 import {createStructuredSelector} from "reselect";
+import {fetchCaptcha, logIn} from "../Reducers/loginPageReducer/actionsForLoginPage";
 
 class LoginPage extends Component {
 
@@ -38,10 +38,10 @@ const mapStateToProps = createStructuredSelector({
 let mapDispatchToProps = (dispatch) => {
     return {
         submitData() {
-            dispatch(login())
+            dispatch(logIn())
         },
         showCaptcha() {
-            dispatch(getCaptcha())
+            dispatch(fetchCaptcha())
         }
     }
 };

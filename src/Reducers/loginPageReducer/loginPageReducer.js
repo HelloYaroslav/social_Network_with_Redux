@@ -1,9 +1,12 @@
 import {captchaRequest, loginRequest} from "../../axios";
 import {setUserInfo} from "../authReducer";
 import {handleActions} from "redux-actions";
+import {all, call, put, select, takeEvery} from 'redux-saga/effects'
 import {
     CHANGE_SUBMITTING_STATUS,
     changeSubmittingStatus,
+    FETCH_CAPTCHA,
+    LOG_IN,
     RESET_SESSION,
     resetSession,
     SET_CAPTCHA_TO_PAGE,
@@ -30,7 +33,7 @@ const initialState = {
         captchaImg: null
     },
     captchaValue: null,
-    showDataResponse: null
+    showDataResponse: false
 };
 
 
@@ -39,57 +42,63 @@ export const getSubmittingIcon = (state) => state.loginPage.submittingIcon;
 export const getMessageToUser = (state) => state.loginPage.serverResponse.messageToUser;
 export const getCaptchaImg = (state) => state.loginPage.serverResponse.captchaImg;
 export const getShowDataResponse = (state) => state.loginPage.showDataResponse;
+const selectLoginData = (state) => state.form.loginForm.values;
+
+const sagaWatchers = [
+    takeEvery(FETCH_CAPTCHA, fetchCaptcha),
+    takeEvery(LOG_IN, login)
+];
+
+function* fetchCaptcha(action) {
+    try {
+        const response = yield call(captchaRequest, null);
+        yield put(setCaptchaToPage(response.data.url));
+        yield put(showDataResponse(true));
+    } catch (e) {
+        console.log('captcha request failed')
+    }
+}
+
+export function* rootSaga() {
+    yield all([...sagaWatchers]);
+}
+
+function* login() {
+    yield  put(changeSubmittingStatus());
+    const {email, password, rememberMe, captchaValue} = yield select(selectLoginData);
+    try {
+        const response = yield loginRequest(email, password, rememberMe, captchaValue);
+        yield call(processLoginResponse, response)
+    } catch (e) {
+        console.log(e)
+    }
+    yield  put(changeSubmittingStatus());
+}
 
 
-export const getCaptcha = () => (dispatch, getState) => {
-    captchaRequest().then(response => {
-        let state = getState();
-        if (response.status === 200) {
-            dispatch(setCaptchaToPage(response.data.url, 'ewf'));
-            dispatch(setMessageToUser('enter a captcha'));
-            if (!state.loginPage.serverResponse.captchaImg) {
-                dispatch(showDataResponse(true));
+function* processLoginResponse(response) {
+    if (response.status === 200) {
+        switch (response.data.resultCode) {
+            case 0 : {
+                yield put(setUserInfo(response.data.data.id));
+                yield put(resetSession());
+                break
+            }
+            case 1 : {
+                yield put(setMessageToUser(response.data.messages.join(' ')));
+                yield put(fetchCaptcha());
+                break
+            }
+            case 10: {
+                yield put(setMessageToUser(response.data.messages.join(' ')));
+                yield put(fetchCaptcha());
+                break
+            }
+            default : {
             }
         }
-
-    })
-};
-
-
-export const login = () => (dispatch, getstate) => {
-    let state = getstate();
-    let {email, password, rememberMe, captchaValue} = state.form.loginForm.values;
-    dispatch(changeSubmittingStatus());
-    return loginRequest(email, password, rememberMe, captchaValue).then(response => {
-        if (response.status === 200) {
-            switch (response.data.resultCode) {
-                case 0 : {
-                    dispatch(setUserInfo(response.data.data.id));
-                    dispatch(resetSession());
-                    break
-                }
-                case 1 : {
-                    dispatch(setMessageToUser(response.data.messages.join(' ')));
-                    captchaRequest().then(response => {
-                        dispatch(setCaptchaToPage(response.data.url));
-                    });
-                    break
-                }
-                case 10: {
-                    dispatch(setMessageToUser(response.data.messages.join(' ')));
-                    captchaRequest().then(response => {
-                        dispatch(setCaptchaToPage(response.data.url));
-                    });
-                    break
-                }
-                default : {
-                }
-            }
-            dispatch(changeSubmittingStatus());
-        }
-    })
-
-};
+    }
+}
 
 
 let loginPageReducer = handleActions({
