@@ -1,7 +1,18 @@
-import {captchaRequest, loginRequest} from "../axios";
-import {setUserInfo} from "./authReducer";
-import {createSelector} from 'reselect'
-import {createAction, createActions, handleActions} from "redux-actions";
+import {captchaRequest, loginRequest} from "../../axios";
+import {setUserInfo} from "../authReducer";
+import {handleActions} from "redux-actions";
+import {
+    CHANGE_SUBMITTING_STATUS,
+    changeSubmittingStatus,
+    RESET_SESSION,
+    resetSession,
+    SET_CAPTCHA_TO_PAGE,
+    SET_MESSAGE_TO_USER,
+    setCaptchaToPage,
+    setMessageToUser,
+    SHOW_DATA_RESPONSE,
+    showDataResponse
+} from "./actionsForLoginPage";
 
 const initialState = {
     email: null,
@@ -23,16 +34,12 @@ const initialState = {
 };
 
 
-const CHANGE_SUBMITTING_STATUS = 'CHANGE_SUBMITTING_STATUS';
-const SET_CAPTCHA_TO_PAGE = 'SET_CAPTCHA_TO_PAGE';
-const SHOW_DATA_RESPONSE = 'SHOW_DATA_RESPONSE';
-const SET_MESSAGE_TO_USER = 'SET_MESSAGE_TO_USER';
-const RESET_SESSION = 'RESET_SESSION ';
+export const getSubmittingStatus = (state) => state.loginPage.submittingStatus;
+export const getSubmittingIcon = (state) => state.loginPage.submittingIcon;
+export const getMessageToUser = (state) => state.loginPage.serverResponse.messageToUser;
+export const getCaptchaImg = (state) => state.loginPage.serverResponse.captchaImg;
+export const getShowDataResponse = (state) => state.loginPage.showDataResponse;
 
-const getSubmittingStatus = (state) => state.loginPage.submittingStatus;
-
-export const makeGetStatusStateInstans = () => createSelector(getSubmittingStatus,
-    (submittingStatus) => submittingStatus);
 
 export const getCaptcha = () => (dispatch, getState) => {
     captchaRequest().then(response => {
@@ -85,16 +92,8 @@ export const login = () => (dispatch, getstate) => {
 };
 
 
-const {changeSubmittingStatus, setCaptchaToPage, showDataResponse, setMessageToUser, resetSession} = createActions({
-    [CHANGE_SUBMITTING_STATUS]: null,
-    [SET_CAPTCHA_TO_PAGE]: (url) => ({url}),
-    [SHOW_DATA_RESPONSE]:(value) => ({value}),
-    [SET_MESSAGE_TO_USER]:(message) => ({message}),
-    [RESET_SESSION]:null
-
-});
 let loginPageReducer = handleActions({
-        [CHANGE_SUBMITTING_STATUS](state){
+        [CHANGE_SUBMITTING_STATUS](state) {
             return {...state, submittingStatus: !state.submittingStatus};
         },
         [SET_CAPTCHA_TO_PAGE](state, {payload: {url}}) {
