@@ -51,7 +51,7 @@ class LoginForm extends Component {
                     <Field name="password" component={this.renderField} label='Password'/>
                 </div>
                 <div className={style.last_buttons}>
-                    <Field name="rememberMe" component="input" type="checkbox" label='Remember me'/>
+                    <Field name="rememberMe" component={this.renderField} type="checkbox" label='Remember me'/>
 
                     <button type="submit">Submit</button>
                 </div>

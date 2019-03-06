@@ -1,7 +1,7 @@
 import {captchaRequest, loginRequest} from "../../axios";
 import {setUserInfo} from "../authReducer";
 import {handleActions} from "redux-actions";
-import {all, call, put, select, takeEvery} from 'redux-saga/effects'
+import {all, call, put, select, takeEvery, fork} from 'redux-saga/effects'
 import {
     CHANGE_SUBMITTING_STATUS,
     changeSubmittingStatus,
@@ -60,17 +60,20 @@ function* fetchCaptcha(action) {
 }
 
 export function* rootSaga() {
-    yield all([...sagaWatchers]);
+    yield all( [
+        takeEvery(FETCH_CAPTCHA, fetchCaptcha),
+        takeEvery(LOG_IN, login)
+    ]);
 }
 
 function* login() {
     yield  put(changeSubmittingStatus());
     const {email, password, rememberMe, captchaValue} = yield select(selectLoginData);
     try {
-        const response = yield loginRequest(email, password, rememberMe, captchaValue);
+        const response = yield call(loginRequest,email, password, rememberMe, captchaValue);
         yield call(processLoginResponse, response)
     } catch (e) {
-        console.log(e)
+        console.log('something get wrong in *login()',e)
     }
     yield  put(changeSubmittingStatus());
 }
@@ -86,12 +89,12 @@ function* processLoginResponse(response) {
             }
             case 1 : {
                 yield put(setMessageToUser(response.data.messages.join(' ')));
-                yield put(fetchCaptcha());
+                yield fork(fetchCaptcha);
                 break
             }
             case 10: {
                 yield put(setMessageToUser(response.data.messages.join(' ')));
-                yield put(fetchCaptcha());
+                yield fork(fetchCaptcha);
                 break
             }
             default : {
